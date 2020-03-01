@@ -71,6 +71,18 @@ sgsl <- function(x,y,type=c("lasso", "group", "ggroup", "ggroupind", "sgsl", "gr
 
 }
 
+## function to form p.group,p.subgroup, and index variables
+## p.group : number of covariates in each group
+## p.subgroup : matrix of number of covariates in each subgroup (each row corresponds to a group)
+## index : group assignments
+
+form.tools <- function(index.subgroup){
+  p.group <- apply(index.subgroup,1,number.non.na)
+  p.subgroup <- as.numeric(table(index.subgroup))
+  index <- rep(1:length(p.group),p.group)
+  list(p.group=p.group,p.subgroup=p.subgroup,index=index)
+}
+
 
 
 
