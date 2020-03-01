@@ -10,6 +10,8 @@
 #' Identification of important regressor groups, subgroups, and individuals via regularization methods: application to gut
 #' microbiome data. Bioinformatics, DOI: 10.1093/bioinformatics/btt608.
 #'
+#' @useDynLib sgslasso, .registration = TRUE
+#' @importFrom Rcpp sourceCpp
 #' @docType package
 #' @name sgslasso
 NULL

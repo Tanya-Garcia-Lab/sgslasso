@@ -22,5 +22,11 @@ Imports:
  grplasso,
  lars,
  MASS,
- Matrix
+ Matrix,
+ Rcpp (>= 0.12.9),
+ SGL
+LinkingTo: Rcpp
+Collate:
+ sgslasso.R
+ main_functions.R
 RoxygenNote: 7.0.2
