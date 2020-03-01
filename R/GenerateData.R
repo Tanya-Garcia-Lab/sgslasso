@@ -9,11 +9,20 @@
 ## beta.coef : matrix of coefficient vectors (rows: groups, columns: coefficient values)
 ## sigma   : model error covariance
 ## index   : vector indicating which covariates are in which groups
+
+#' Data generation for group lasso
+#'
+#' @param N sample size
+#' @param p.group number of covariates in each subgroup
+#' @param beta.coef matrix of coefficient vectors (rows: groups, columns: coefficient values)
+#' @param sigma model error variance
+#'
+#'
 #' @importFrom MASS mvrnorm
 #' @importFrom Matrix bdiag
 #' @import stats
 #' @export
-data.group <- function(N,p.subgroup,beta.coef,sigma){
+data.group <- function(N,p.group,beta.coef,sigma){
 
   ########################################
   ## Form beta vector ##
@@ -26,19 +35,19 @@ data.group <- function(N,p.subgroup,beta.coef,sigma){
   ## Make p.subgroup into a vector ##
   ##################################################################
 
-  p.subgroup.vector <- p.subgroup
+  p.group.vector <- p.group
 
   ######################################
   ## Form covariates ##
   ######################################
   ## X \sim Normal(mu,Sigma)
 
-  no.subgroup <- length(p.subgroup.vector)
+  no.subgroup <- length(p.group.vector)
   Sigma.list <- vector("list",no.subgroup)
   for(j in 1:no.subgroup){
-    Sigma.list[[j]] <- 0.7 * matrix(1,nrow=p.subgroup.vector[j],
-                                    ncol=p.subgroup.vector[j]) +
-      0.3 * diag(1,nrow=p.subgroup.vector[j])
+    Sigma.list[[j]] <- 0.7 * matrix(1,nrow=p.group.vector[j],
+                                    ncol=p.group.vector[j]) +
+      0.3 * diag(1,nrow=p.group.vector[j])
   }
 
   ## Form Sigma covariance matrix
