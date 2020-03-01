@@ -61,14 +61,14 @@ Fit the sparse group-subgroup lasso (SGSL)
 }
 \examples{
 set.seed(1)
-x <- matrix(rnorm(360), nrow=12)
-y <- 0.5*x[1,] + 0.5*x[2,] + 1.0*x[4,] + matrix(rnorm(30), nrow=1)
+x <- matrix(rnorm(1200), ncol=12)
+y <- 0.5*x[,1] + 0.5*x[,2] + 1.0*x[,4] + matrix(rnorm(100), nrow=1)
 index.subgroup <- matrix(NA,nrow=3,ncol=12)
 index.subgroup[1,1:2]=1; index.subgroup[1,3:4]=2
 index.subgroup[2,5:6]=3; index.subgroup[2,7:8]=4
 index.subgroup[3,9:10]=5; index.subgroup[3,11:12]=6
 out_lasso <- sgsl(x,y,type="lasso",index.subgroup = index.subgroup)
-##out_group <- sgsl(x,y,type="group",index.subgroup = index.subgroup,tau=0.94)
+out_group <- sgsl(x,y,type="group",index.subgroup = index.subgroup,tau=0.94)
 ##out_ggroup <- sgsl(x,y,type="ggroup",index.subgroup = index.subgroup,tau=0.94)
 ##out_ggroupind <- sgsl(x,y,type="ggroupind",index.subgroup = index.subgroup,tau=0.94)
 

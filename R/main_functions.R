@@ -28,7 +28,7 @@
 #' index.subgroup[2,5:6]=3; index.subgroup[2,7:8]=4
 #' index.subgroup[3,9:10]=5; index.subgroup[3,11:12]=6
 #' out_lasso <- sgsl(x,y,type="lasso",index.subgroup = index.subgroup)
-#' ##out_group <- sgsl(x,y,type="group",index.subgroup = index.subgroup,tau=0.94)
+#' out_group <- sgsl(x,y,type="group",index.subgroup = index.subgroup,tau=0.94)
 #' ##out_ggroup <- sgsl(x,y,type="ggroup",index.subgroup = index.subgroup,tau=0.94)
 #' ##out_ggroupind <- sgsl(x,y,type="ggroupind",index.subgroup = index.subgroup,tau=0.94)
 #'
