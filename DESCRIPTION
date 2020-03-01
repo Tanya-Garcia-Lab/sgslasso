@@ -29,4 +29,5 @@ LinkingTo: Rcpp
 Collate:
  sgslasso.R
  main_functions.R
+ GenerateData.R
 RoxygenNote: 7.0.2
