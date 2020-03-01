@@ -90,6 +90,6 @@ x <- out$X
 out_lasso <- sgsl(x,y,type="lasso",index.subgroup = index.subgroup)
 out_group <- sgsl(x,y,type="group",index.subgroup = index.subgroup,tau=0.94)
 out_ggroup <- sgsl(x,y,type="ggroup",index.subgroup = index.subgroup,tau=0.94)
-##out_ggroupind <- sgsl(x,y,type="ggroupind",index.subgroup = index.subgroup,tau=0.94)
+out_ggroupind <- sgsl(x,y,type="ggroupind",index.subgroup = index.subgroup,tau=0.94)
 
 }

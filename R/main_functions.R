@@ -50,7 +50,7 @@
 #' out_lasso <- sgsl(x,y,type="lasso",index.subgroup = index.subgroup)
 #' out_group <- sgsl(x,y,type="group",index.subgroup = index.subgroup,tau=0.94)
 #' out_ggroup <- sgsl(x,y,type="ggroup",index.subgroup = index.subgroup,tau=0.94)
-#' ##out_ggroupind <- sgsl(x,y,type="ggroupind",index.subgroup = index.subgroup,tau=0.94)
+#' out_ggroupind <- sgsl(x,y,type="ggroupind",index.subgroup = index.subgroup,tau=0.94)
 #'
 sgsl <- function(x,y,type=c("lasso", "group", "ggroup", "ggroupind", "sgsl", "groupsgl")[1],
                  index.subgroup,
@@ -346,7 +346,7 @@ group.lasso <- function(yy,XX,index,tau,
 ## delta.subgroup : delta applied to C_p critierian for group lasso among subgroups
 ## delta.ind    : delta applied to C_p criterion for lasso with individual features
 
-group.group.indlasso.lasso <- function(XX,response,index,index.subgroup,p.group,tau,
+group.group.indlasso.lasso <- function(response,XX,index,index.subgroup,p.group,tau,
                                        delta.group=2,delta.subgroup=2,delta.ind=2,
                                        standardize=TRUE){
 
