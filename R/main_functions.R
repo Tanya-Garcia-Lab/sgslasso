@@ -21,15 +21,35 @@
 #'
 #' @examples
 #' set.seed(1)
-#' x <- matrix(rnorm(1200), ncol=12)
-#' y <- 0.5*x[,1] + 0.5*x[,2] + 1.0*x[,4] + matrix(rnorm(100), nrow=1)
-#' index.subgroup <- matrix(NA,nrow=3,ncol=12)
-#' index.subgroup[1,1:2]=1; index.subgroup[1,3:4]=2
-#' index.subgroup[2,5:6]=3; index.subgroup[2,7:8]=4
-#' index.subgroup[3,9:10]=5; index.subgroup[3,11:12]=6
+#' N=30;
+#' L=10;
+#' p.in.group =8;
+#' p=L * p.in.group;
+#' sigma <- sqrt(1);
+#' beta.coef <- matrix(0,nrow=2*L,ncol=(p/L)/2)
+#' beta.coef[1,] <- c(6,6.4,6.6,8)/2
+#' beta.coef[2,] <- c(6,6.4,6.6,8)/2
+#' beta.coef[3,] <- c(6,6.6,6.6,8)/2
+#' beta.coef[5,] <- c(12.5,12.5,0,0)/2
+#' beta.coef <- beta.coef *2
+#' p.group <- rep(p/L,L)
+#' index.subgroup <- matrix(NA,nrow=L,ncol=p)
+#' tmp <- 0
+#' for(k in 1:L){
+#' if(k==1){
+#' index.subgroup[k,1:p.group[k]] <- c(rep(1,(p/L)/2),rep(2,(p/L)/2))
+#' } else {
+#' ind <- 1:p.group[k] + sum(p.group[(k-1):1])
+#' index.subgroup[k,ind] <- c(rep(k+tmp,(p/L)/2),rep(k+tmp+1,(p/L)/2))
+#' }
+#' tmp <- tmp + 1
+#' }
+#' out <- data.group(N,p.group,beta.coef,sigma)
+#' y <- out$y
+#' x <- out$X
 #' out_lasso <- sgsl(x,y,type="lasso",index.subgroup = index.subgroup)
 #' out_group <- sgsl(x,y,type="group",index.subgroup = index.subgroup,tau=0.94)
-#' ##out_ggroup <- sgsl(x,y,type="ggroup",index.subgroup = index.subgroup,tau=0.94)
+#' out_ggroup <- sgsl(x,y,type="ggroup",index.subgroup = index.subgroup,tau=0.94)
 #' ##out_ggroupind <- sgsl(x,y,type="ggroupind",index.subgroup = index.subgroup,tau=0.94)
 #'
 sgsl <- function(x,y,type=c("lasso", "group", "ggroup", "ggroupind", "sgsl", "groupsgl")[1],
@@ -48,7 +68,7 @@ sgsl <- function(x,y,type=c("lasso", "group", "ggroup", "ggroupind", "sgsl", "gr
   p.group <- tools$p.group
   p.subgroup <- tools$p.subgroup
   x <- as.data.frame(x)
-  y <- t(as.data.frame(y))
+  y <- as.data.frame(y)
 
   ## allocate names to X
   if(is.null(colnames(x))){
@@ -69,6 +89,18 @@ sgsl <- function(x,y,type=c("lasso", "group", "ggroup", "ggroupind", "sgsl", "gr
                                       index=index,p.group=p.group,tau=tau,
                                       delta.group=delta.group,
                                       standardize=standardize)
+  } else if (type == "ggroup"){
+    ## Apply the group lasso among subgroups ##
+    out <- group.group.lasso.computations(XX=x,response=y,index,index.subgroup,p.group,tau=tau,
+                                          delta.group=delta.group,
+                                          delta.subgroup=delta.subgroup,
+                                          standardize=standardize)
+
+  } else if (type == "ggroupind"){
+    ## Apply the lasso with individual features ##
+    out <- group.group.indlasso.lasso.computations(XX=x,response=y,index,index.subgroup,p.group,tau=tau,
+                                                   delta.group=delta.group,delta.subgroup=delta.subgroup,delta.ind=delta.ind,
+                                                   standardize=standardize)
 
   } else {
     print("type should be either lasso, group, ggroup, ggroupind, sgsl or groupsgl")
@@ -246,7 +278,7 @@ pure.grplasso.computations <- function(XX,response,index,p.group,tau,
 
 #' @import stats
 #' @import grplasso
-group.lasso <- function(XX,yy,index,tau,
+group.lasso <- function(yy,XX,index,tau,
                         delta=2,standardize=TRUE){
   y <- yy
   X <- XX
@@ -303,3 +335,153 @@ group.lasso <- function(XX,yy,index,tau,
 
   return(sig.variables)
 }
+
+
+
+
+######################################################
+## PURE GROUP LASSO, GROUP LASSO, and LASSO Approach #
+######################################################
+## delta.group : delta applied to C_p criterion for group lasso
+## delta.subgroup : delta applied to C_p critierian for group lasso among subgroups
+## delta.ind    : delta applied to C_p criterion for lasso with individual features
+
+group.group.indlasso.lasso <- function(XX,response,index,index.subgroup,p.group,tau,
+                                       delta.group=2,delta.subgroup=2,delta.ind=2,
+                                       standardize=TRUE){
+
+  ## group lasso to groups
+  group.lasso.out <- group.lasso(response,XX,index,tau,
+                                 delta=delta.group,standardize=standardize)
+
+  sig.variables <- group.lasso.out
+
+  main.ind <- which(sig.variables==1)
+
+  ################################################
+  ## setting up to apply group Lasso to subgroups #
+  #################################################
+
+  tmp.subgroup <- as.vector(t(index.subgroup))
+  tmp.subgroup <- tmp.subgroup[!is.na(tmp.subgroup)]
+  new.index.subgroup <- tmp.subgroup[main.ind]
+
+  if(sum(main.ind)!=0){
+    X.tmp <- XX[,main.ind]
+    ##if(length(main.ind)>1){
+    ##  X.tmp <- microbes[main.ind,]
+    ##} else {
+    ##   X.tmp <- t(data.frame(microbes[main.ind,]))
+    ##}
+    subgroup.lasso.out <- group.lasso(response,X.tmp,new.index.subgroup,tau,
+                                      delta=delta.subgroup,standardize=standardize)
+    sig.variables[main.ind] <- subgroup.lasso.out
+  }
+
+  ######################################################
+  ## setting up to apply lasso among variables selected #
+  #######################################################
+
+  new.main.ind <- which(sig.variables==1)
+
+  if(sum(new.main.ind)!=0){
+    X.tmp <- XX[,new.main.ind]
+
+    ##if(length(new.main.ind)>1){
+    ##  X.tmp <- microbes[new.main.ind,]
+    ##} else {
+    ##   X.tmp <- t(data.frame(microbes[new.main.ind,]))
+    ##}
+    lasso.out <-  lasso(response,X.tmp,
+                        delta=delta.ind)
+    sig.variables[new.main.ind] <- lasso.out
+  }
+
+  return(sig.variables)
+
+}
+
+group.group.indlasso.lasso.computations <- function(XX,response,index,index.subgroup,p.group,tau,
+                                                    delta.group=2,delta.subgroup=2,delta.ind=2,
+                                                    standardize=TRUE){
+  interest <- matrix(0,nrow=ncol(XX),ncol=ncol(response))
+  interest <- as.data.frame(interest)
+  rownames(interest) <- colnames(XX)
+  colnames(interest) <- colnames(response)
+
+  data.yy <- response
+
+  for(i in 1:ncol(interest)){
+    ##print(i)
+    lasso.out <- group.group.indlasso.lasso(data.yy[,i],XX,index,index.subgroup,p.group,tau,
+                                            delta.group,delta.subgroup,delta.ind,
+                                            standardize=standardize)
+
+    interest[,i] <- lasso.out
+  }
+  return(interest)
+}
+
+
+
+############################################
+## PURE GROUP LASSO & GROUP LASSO Approach #
+############################################
+
+## delta.group : delta applied to C_p criterion for group lasso
+## delta.subgroup : delta applied to C_p critierian for group lasso among subgroups
+
+group.group.lasso <- function(yy,XX,index,index.subgroup,p.group,tau,
+                              delta.group=2,delta.subgroup=2,
+                              standardize=TRUE){
+
+  ## group lasso to groups
+  group.lasso.out <- group.lasso(yy,XX,index,tau,
+                                 delta=delta.group,standardize=standardize)
+
+  sig.variables <- group.lasso.out
+
+  main.ind <- which(sig.variables==1)
+
+  ## setting up to apply group Lasso to subgroups
+  tmp.subgroup <- as.vector(t(index.subgroup))
+  tmp.subgroup <- tmp.subgroup[!is.na(tmp.subgroup)]
+  new.index.subgroup <- tmp.subgroup[main.ind]
+
+  if(sum(main.ind)!=0){
+    X.tmp <- XX[,main.ind]
+
+    subgroup.lasso.out <- group.lasso(yy,X.tmp,new.index.subgroup,tau,
+                                      delta=delta.subgroup,standardize=standardize)
+    sig.variables[main.ind] <- subgroup.lasso.out
+  }
+
+  return(sig.variables)
+
+}
+
+group.group.lasso.computations <- function(XX,response,index,index.subgroup,p.group,tau,
+                                           delta.group=2,
+                                           delta.subgroup=2,standardize=TRUE){
+
+  interest <- matrix(0,nrow=ncol(XX),ncol=ncol(response))
+  interest <- as.data.frame(interest)
+  rownames(interest) <- colnames(XX)
+  colnames(interest) <- colnames(response)
+
+  data.yy <- response
+
+  for(i in 1:ncol(interest)){
+    ##print(i)
+    lasso.out <- group.group.lasso(data.yy[,i],XX,
+                                   index,index.subgroup,p.group,tau,
+                                   delta.group,delta.subgroup,
+                                   standardize=standardize)
+
+    interest[,i] <- lasso.out
+  }
+  return(interest)
+}
+
+
+

@@ -20,5 +20,7 @@ LazyData: true
 Depends: R (>= 3.0.1), stats
 Imports:
  grplasso,
- lars
+ lars,
+ MASS,
+ Matrix
 RoxygenNote: 7.0.2
