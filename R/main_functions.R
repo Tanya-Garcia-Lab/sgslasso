@@ -51,8 +51,8 @@
 #' out_group <- sgsl(x,y,type="group",index.subgroup = index.subgroup,tau=0.94)
 #' out_ggroup <- sgsl(x,y,type="ggroup",index.subgroup = index.subgroup,tau=0.94)
 #' out_ggroupind <- sgsl(x,y,type="ggroupind",index.subgroup = index.subgroup,tau=0.94)
-#'
-sgsl <- function(x,y,type=c("lasso", "group", "ggroup", "ggroupind", "sgsl", "groupsgl")[1],
+#' out_sgsl <- sgsl(x,y,type="sgsl",index.subgroup=index.subgroup,tau=0.94)
+sgsl <- function(x,y,type=c("lasso", "group", "ggroup", "ggroupind", "sgsl")[1],
                  index.subgroup,
                  tau=0.94,
                  alpha1=0.05,
