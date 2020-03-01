@@ -77,13 +77,13 @@ x <- out$X
 out_lasso <- sgsl(x,y,type="lasso",index.subgroup = index.subgroup)
 
 ## Group lasso variable selection among the groups only
-out_group <- sgsl(x,y,type="group",index.subgroup = index.subgroup,tau=0.94)
+##out_group <- sgsl(x,y,type="group",index.subgroup = index.subgroup,tau=0.94)
 
 ## Group lasso variable selection among the groups and subgroups
-out_ggroup <- sgsl(x,y,type="ggroup",index.subgroup = index.subgroup,tau=0.94)
+##out_ggroup <- sgsl(x,y,type="ggroup",index.subgroup = index.subgroup,tau=0.94)
 
 ## Group lasso variable selection among the groups and subgroups, and lasso among variables within each subgroup
-out_ggroupind <- sgsl(x,y,type="ggroupind",index.subgroup = index.subgroup,tau=0.94)
+##out_ggroupind <- sgsl(x,y,type="ggroupind",index.subgroup = index.subgroup,tau=0.94)
 
 ## Sparse group subgroup lasso
 out_sgsl <- sgsl(x,y,type="sgsl",index.subgroup=index.subgroup,tau=0.94)
