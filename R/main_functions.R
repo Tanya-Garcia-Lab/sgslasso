@@ -71,6 +71,19 @@ sgsl <- function(x,y,type=c("lasso", "group", "ggroup", "ggroupind", "sgsl", "gr
 
 }
 
+
+###################################
+## Functions for organizing data ##
+###################################
+
+## function to count number of non-NA elements in a vector
+
+number.non.na <- function(x){
+  return(sum(!is.na(x)))
+}
+
+
+
 ## function to form p.group,p.subgroup, and index variables
 ## p.group : number of covariates in each group
 ## p.subgroup : matrix of number of covariates in each subgroup (each row corresponds to a group)
