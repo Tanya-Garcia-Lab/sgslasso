@@ -63,7 +63,14 @@ sgsl <- function(x,y,type=c("lasso", "group", "ggroup", "ggroupind", "sgsl", "gr
   if (type == "lasso"){
     ## Apply Lasso ##
     out <- lasso.computations(XX=x,response=y,delta=delta,standardize=standardize)
-  }  else {
+  } else if (type == "group"){
+    ## Apply pure group Lasso ##
+    out <- pure.grplasso.computations(XX=x,response=y,
+                                      index=index,p.group=p.group,tau=tau,
+                                      delta.group=delta.group,
+                                      standardize=standardize)
+
+  } else {
     print("type should be either lasso, group, ggroup, ggroupind, sgsl or groupsgl")
   }
 
@@ -202,3 +209,97 @@ lasso <- function(yy,XX,delta=2,standardize=TRUE){
 }
 
 
+
+
+##############################
+## PURE GROUP LASSO Approach #
+##############################
+
+pure.grplasso.computations <- function(XX,response,index,p.group,tau,
+                                       delta.group=2,
+                                       standardize=TRUE){
+
+  interest <- matrix(0,nrow=ncol(XX),ncol=ncol(response))
+  interest <- as.data.frame(interest)
+  rownames(interest) <- colnames(XX)
+  colnames(interest) <- colnames(response)
+
+  data.yy <- response
+
+
+  for(i in 1:ncol(interest)){
+    ##print(i)
+    lasso.out <- group.lasso(data.yy[,i],XX,index,tau,
+                             delta=delta.group,standardize=standardize)
+
+    interest[,i] <- lasso.out
+  }
+  return(interest)
+}
+
+
+
+
+#########################
+## GROUP LASSO Approach #
+#########################
+
+#' @import stats
+#' @import grplasso
+group.lasso <- function(XX,yy,index,tau,
+                        delta=2,standardize=TRUE){
+  y <- yy
+  X <- XX
+
+  N <- length(y)
+
+  if(standardize==TRUE){
+    y1 <- make.std(y)
+    X1 <- apply(X,2,make.std)
+  } else {
+    y1 <- y
+    X1 <- X
+  }
+
+  ## Use a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
+  lambda <- grplasso::lambdamax(X1,y=y1, index=index,penscale=sqrt,model=LinReg(),
+                                center=FALSE,
+                                standardize=standardize)  * c(tau^(0:100),0)
+
+  ## Run Group Lasso
+  Lasso.out <-  grplasso::grplasso(X1, y = y1, index = index, lambda = lambda,
+                                   model = LinReg(),
+                                   penscale = sqrt,
+                                   control = grpl.control(update.hess = "lambda",
+                                                          trace = 0),center=FALSE,
+                                   standardize=standardize)
+
+  ## use Cp-like criterion to find best descriptive model
+  p = dim(X1)[2]
+  s = length(Lasso.out$lambda)
+  p.pos = NULL
+
+  RSS = NULL
+  for (i in 1:s){
+    RSS[i] = sum((y1-Lasso.out$fitted[,i])**2)
+    p.pre = Lasso.out$coefficients[,i]
+    p.pos = c(p.pos,length(p.pre[abs(p.pre)>1e-10]))
+  }
+
+  ## Estimated MSE
+  MSE <- stats::sd(as.vector(y1)) * sqrt( N / (N-1) )
+  MSE <- MSE^2
+
+
+  p.min = which.min(RSS/MSE+delta*p.pos)
+
+  ## final best descriptive model
+  predict.out <- Lasso.out$coefficients[,p.min]
+
+  ind <- which(abs(predict.out)>1e-10)
+  sig.variables <- rep(0,ncol(XX))
+  sig.variables[ind] <- 1
+
+
+  return(sig.variables)
+}
