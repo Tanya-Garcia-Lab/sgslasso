@@ -1,6 +1,6 @@
 Package: sgslasso
 Type: Package
-Title: Sparse group-subgroup lasso for identification of important regressor groups, subgroups and individuals
+Title: Sparse group-subgroup lasso for identification of important regressor groups, subgroups and individual variables
 Version: 1.1.1.9001
 Authors@R: 
     person(given = "Rakheon",
