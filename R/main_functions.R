@@ -21,8 +21,8 @@
 #'
 #' @examples
 #' set.seed(1)
-#' x <- matrix(rnorm(360), nrow=12)
-#' y <- 0.5*x[1,] + 0.5*x[2,] + 1.0*x[4,] + matrix(rnorm(30), nrow=1)
+#' x <- matrix(rnorm(1200), ncol=12)
+#' y <- 0.5*x[,1] + 0.5*x[,2] + 1.0*x[,4] + matrix(rnorm(100), nrow=1)
 #' index.subgroup <- matrix(NA,nrow=3,ncol=12)
 #' index.subgroup[1,1:2]=1; index.subgroup[1,3:4]=2
 #' index.subgroup[2,5:6]=3; index.subgroup[2,7:8]=4
@@ -48,7 +48,7 @@ sgsl <- function(x,y,type=c("lasso", "group", "ggroup", "ggroupind", "sgsl", "gr
   p.group <- tools$p.group
   p.subgroup <- tools$p.subgroup
   x <- as.data.frame(x)
-  y <- as.data.frame(y)
+  y <- t(as.data.frame(y))
 
   ## allocate names to X
   if(is.null(colnames(x))){
@@ -116,7 +116,7 @@ lasso.computations <- function(XX,response,delta,standardize){
 
   for(i in 1:ncol(interest)){
     ##print(i)
-    lasso.out <- lasso(yy=data.yy[,i],XX,delta,standardize=standardize)
+    lasso.out <- lasso(yy=as.matrix(data.yy[,i]),XX,delta,standardize=standardize)
     interest[,i] <- lasso.out
   }
   return(interest)
