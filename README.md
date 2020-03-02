@@ -19,13 +19,7 @@ microbiome data. Bioinformatics, DOI: 10.1093/bioinformatics/btt608.
 
 ## Installation
 
-You can install the released version of sgslasso from [CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("sgslasso")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
