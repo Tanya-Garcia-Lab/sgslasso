@@ -16,7 +16,7 @@ lasso.computations(XX, response, delta, standardize)
 \item{standardize}{logical. TRUE for standardizing the data.}
 }
 \value{
-interest: indicators of the selected predictors. 1 for selected predictors and 0 for not selected predictors
+indicators of the selected predictors. 1 for selected predictors and 0 for not selected predictors
 }
 \description{
 Fit the Least Absolute Shrinkage and Selection Operator (LASSO)

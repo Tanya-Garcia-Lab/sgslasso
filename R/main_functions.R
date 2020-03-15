@@ -164,9 +164,9 @@ form.tools <- function(index.subgroup){
 #'
 #' @examples
 #' set.seed(1)
-#' XX = matrix(rnorm(100*5, 0, 1),100,5)
-#' response = matrix(XX[,1] - XX[,2] + rnorm(100, 0, 1), 100)
-#' lasso_res = lasso.computations(XX=XX,response=response,delta=2,standardize=TRUE)
+#' XX <- matrix(rnorm(100*5, 0, 1),100,5)
+#' response <- matrix(XX[,1] - XX[,2] + rnorm(100, 0, 1), 100)
+#' predictors_selected <- lasso.computations(XX=XX,response=response,delta=2,standardize=TRUE)
 lasso.computations <- function(XX,response,delta,standardize){
 
   interest <- matrix(0,nrow=ncol(XX),ncol=ncol(response))
@@ -469,7 +469,7 @@ group.group.indlasso.lasso <- function(response,XX,index,index.subgroup,p.group,
 #' out <- data.group(N,p.group,beta.coef,sigma)
 #' response <- out$y
 #' XX <- out$X
-#' group.group.indlasso.lasso.computations <- function(XX=XX,response=response,index=index,index.subgroup=index.subgroup,p.group=p.group,tau=0.94,delta.group=2,delta.subgroup=2,delta.ind=2,standardize=TRUE)
+#' predictors_selected <- group.group.indlasso.lasso.computations(XX=XX,response=response,index=index,index.subgroup=index.subgroup,p.group=p.group,tau=0.94,delta.group=2,delta.subgroup=2,delta.ind=2,standardize=TRUE)
 group.group.indlasso.lasso.computations <- function(XX,response,index,index.subgroup,p.group,tau,
                                                     delta.group=2,delta.subgroup=2,delta.ind=2,
                                                     standardize=TRUE){

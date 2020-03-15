@@ -2,7 +2,7 @@
 % Please edit documentation in R/main_functions.R
 \name{group.group.indlasso.lasso.computations}
 \alias{group.group.indlasso.lasso.computations}
-\title{Title}
+\title{Fit Group Lasso with Individual Features}
 \usage{
 group.group.indlasso.lasso.computations(
   XX,
@@ -18,11 +18,60 @@ group.group.indlasso.lasso.computations(
 )
 }
 \arguments{
-\item{standardize}{}
+\item{XX}{p by N matrix of predictors (N: sample size, p: number of predictors)}
+
+\item{response}{1 by N matrix of response variable}
+
+\item{index}{index for groups}
+
+\item{index.subgroup}{index for subgroups}
+
+\item{p.group}{vector of the number of predictors in each group}
+
+\item{tau}{tau}
+
+\item{delta.group}{delta applied to C_p criterion for group lasso}
+
+\item{delta.subgroup}{delta applied to C_p critierian for group lasso among subgroups}
+
+\item{delta.ind}{delta applied to C_p criterion for lasso with individual features}
+
+\item{standardize}{logical. TRUE for standardizing the data.}
 }
 \value{
-
+indicators of the selected predictors. 1 for selected predictors and 0 for not selected predictors
 }
 \description{
-Title
+Fit Group Lasso with Individual Features
+}
+\examples{
+set.seed(1)
+N=30;
+L=10;
+p.in.group =8;
+p=L * p.in.group;
+sigma <- sqrt(1);
+beta.coef <- matrix(0,nrow=2*L,ncol=(p/L)/2)
+beta.coef[1,] <- c(6,6.4,6.6,8)/2
+beta.coef[2,] <- c(6,6.4,6.6,8)/2
+beta.coef[3,] <- c(6,6.6,6.6,8)/2
+beta.coef[5,] <- c(12.5,12.5,0,0)/2
+beta.coef <- beta.coef *2
+p.group <- rep(p/L,L)
+index <- rep(1:length(p.group),p.group)
+index.subgroup <- matrix(NA,nrow=L,ncol=p)
+tmp <- 0
+for(k in 1:L){
+if(k==1){
+index.subgroup[k,1:p.group[k]] <- c(rep(1,(p/L)/2),rep(2,(p/L)/2))
+} else {
+ind <- 1:p.group[k] + sum(p.group[(k-1):1])
+index.subgroup[k,ind] <- c(rep(k+tmp,(p/L)/2),rep(k+tmp+1,(p/L)/2))
+}
+tmp <- tmp + 1
+}
+out <- data.group(N,p.group,beta.coef,sigma)
+response <- out$y
+XX <- out$X
+group.group.indlasso.lasso.computations <- function(XX=XX,response=response,index=index,index.subgroup=index.subgroup,p.group=p.group,tau=0.94,delta.group=2,delta.subgroup=2,delta.ind=2,standardize=TRUE)
 }
