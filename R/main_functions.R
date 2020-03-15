@@ -152,7 +152,7 @@ form.tools <- function(index.subgroup){
 ####################
 
 
-#' Fit the Least Absolute Shrinkage and Selection Operator (LASSO)
+#' Fit the least absolute shrinkage and selection operator (lasso)
 #'
 #' @param XX p by N matrix of predictors (N: sample size, p: number of predictors)
 #' @param response 1 by N matrix of response variable
@@ -424,7 +424,7 @@ group.group.indlasso.lasso <- function(response,XX,index,index.subgroup,p.group,
 
 }
 
-#' Fit Group Lasso with Individual Features
+#' Fit the repeated group Lasso with individual features (applying the lasso after the group lasso at the group and subgroup levels)
 #'
 #' @param XX p by N matrix of predictors (N: sample size, p: number of predictors)
 #' @param response 1 by N matrix of response variable
@@ -529,7 +529,7 @@ group.group.lasso <- function(yy,XX,index,index.subgroup,p.group,tau,
 
 }
 
-#' Fit Group-Group Lasso
+#' Fit the repeated group lasso (applying the group lasso at the group and subgroup levels)
 #'
 #' @param XX p by N matrix of predictors (N: sample size, p: number of predictors)
 #' @param response 1 by N matrix of response variable
@@ -844,7 +844,7 @@ cv.sparse.group.subgroup <- function(yy,XX,group.index,subgroup.index,tau,
   list(sig.variables = Lasso.out$sig.variables, alphas=alpha.opt)
 }
 
-#' Fit Sparse-Group_Subgroup Lasso (SGSL)
+#' Fit the sparse group-subgroup lasso (SGSL)
 #'
 #' @param XX p by N matrix of predictors (N: sample size, p: number of predictors)
 #' @param response 1 by N matrix of response variable
