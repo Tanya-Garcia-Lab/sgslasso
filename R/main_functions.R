@@ -152,6 +152,17 @@ form.tools <- function(index.subgroup){
 ####################
 
 
+#' Title
+#'
+#' @param XX
+#' @param response
+#' @param delta
+#' @param standardize
+#'
+#' @return
+#' @export
+#'
+#' @examples
 lasso.computations <- function(XX,response,delta,standardize){
 
   interest <- matrix(0,nrow=ncol(XX),ncol=ncol(response))
@@ -409,6 +420,23 @@ group.group.indlasso.lasso <- function(response,XX,index,index.subgroup,p.group,
 
 }
 
+#' Title
+#'
+#' @param XX
+#' @param response
+#' @param index
+#' @param index.subgroup
+#' @param p.group
+#' @param tau
+#' @param delta.group
+#' @param delta.subgroup
+#' @param delta.ind
+#' @param standardize
+#'
+#' @return
+#' @export
+#'
+#' @examples
 group.group.indlasso.lasso.computations <- function(XX,response,index,index.subgroup,p.group,tau,
                                                     delta.group=2,delta.subgroup=2,delta.ind=2,
                                                     standardize=TRUE){
@@ -468,6 +496,22 @@ group.group.lasso <- function(yy,XX,index,index.subgroup,p.group,tau,
 
 }
 
+#' Title
+#'
+#' @param XX
+#' @param response
+#' @param index
+#' @param index.subgroup
+#' @param p.group
+#' @param tau
+#' @param delta.group
+#' @param delta.subgroup
+#' @param standardize
+#'
+#' @return
+#' @export
+#'
+#' @examples
 group.group.lasso.computations <- function(XX,response,index,index.subgroup,p.group,tau,
                                            delta.group=2,
                                            delta.subgroup=2,standardize=TRUE){
@@ -738,6 +782,29 @@ cv.sparse.group.subgroup <- function(yy,XX,group.index,subgroup.index,tau,
   list(sig.variables = Lasso.out$sig.variables, alphas=alpha.opt)
 }
 
+#' Title
+#'
+#' @param XX
+#' @param response
+#' @param group.index
+#' @param subgroup.index
+#' @param tau
+#' @param alpha1
+#' @param alpha2
+#' @param alpha3
+#' @param nlam
+#' @param lambdas
+#' @param lambda.accuracy
+#' @param delta.group
+#' @param format.data
+#' @param cv.criterion
+#' @param nfold
+#' @param alphas.cv.range
+#'
+#' @return
+#' @export
+#'
+#' @examples
 sparse.group.subgroup.computations <- function(XX,response,group.index,subgroup.index,tau,alpha1,alpha2,
                                                alpha3,nlam,lambdas,
                                                lambda.accuracy,
