@@ -20,7 +20,7 @@
 #' @export
 #'
 #' @examples
-#' set.seed(3)
+#' set.seed(5)
 #' N=30;
 #' L=10;
 #' p.in.group =8;
