@@ -23,7 +23,7 @@ Fit the Least Absolute Shrinkage and Selection Operator (LASSO)
 }
 \examples{
 set.seed(1)
-XX = matrix(rnorm(100*5, 0, 1),100,5)
-response = matrix(XX[,1] - XX[,2] + rnorm(100, 0, 1), 100)
-lasso_res = lasso.computations(XX=XX,response=response,delta=2,standardize=TRUE)
+XX <- matrix(rnorm(100*5, 0, 1),100,5)
+response <- matrix(XX[,1] - XX[,2] + rnorm(100, 0, 1), 100)
+predictors_selected <- lasso.computations(XX=XX,response=response,delta=2,standardize=TRUE)
 }

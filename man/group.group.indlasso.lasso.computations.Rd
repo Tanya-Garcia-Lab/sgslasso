@@ -30,7 +30,7 @@ group.group.indlasso.lasso.computations(
 
 \item{tau}{tau}
 
-\item{delta.group}{delta applied to C_p criterion for group lasso}
+\item{delta.group}{delta applied to C_p criterion for group lasso (Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.)}
 
 \item{delta.subgroup}{delta applied to C_p critierian for group lasso among subgroups}
 
@@ -73,5 +73,5 @@ tmp <- tmp + 1
 out <- data.group(N,p.group,beta.coef,sigma)
 response <- out$y
 XX <- out$X
-group.group.indlasso.lasso.computations <- function(XX=XX,response=response,index=index,index.subgroup=index.subgroup,p.group=p.group,tau=0.94,delta.group=2,delta.subgroup=2,delta.ind=2,standardize=TRUE)
+predictors_selected <- group.group.indlasso.lasso.computations(XX=XX,response=response,index=index,index.subgroup=index.subgroup,p.group=p.group,tau=0.94,delta.group=2,delta.subgroup=2,delta.ind=2,standardize=TRUE)
 }

@@ -431,7 +431,7 @@ group.group.indlasso.lasso <- function(response,XX,index,index.subgroup,p.group,
 #' @param index index for groups
 #' @param index.subgroup index for subgroups
 #' @param p.group vector of the number of predictors in each group
-#' @param tau tau
+#' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
 #' @param delta.group delta applied to C_p criterion for group lasso (Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.)
 #' @param delta.subgroup delta applied to C_p critierian for group lasso among subgroups
 #' @param delta.ind delta applied to C_p criterion for lasso with individual features
@@ -536,7 +536,7 @@ group.group.lasso <- function(yy,XX,index,index.subgroup,p.group,tau,
 #' @param index index for groups
 #' @param index.subgroup index for subgroups
 #' @param p.group vector of the number of predictors in each group
-#' @param tau tau
+#' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
 #' @param delta.group delta applied to C_p criterion for group lasso (Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.)
 #' @param delta.subgroup delta applied to C_p critierian for group lasso among subgroups
 #' @param standardize logical. TRUE for standardizing the data.
@@ -844,29 +844,62 @@ cv.sparse.group.subgroup <- function(yy,XX,group.index,subgroup.index,tau,
   list(sig.variables = Lasso.out$sig.variables, alphas=alpha.opt)
 }
 
-#' Title
+#' Fit Sparse-Group_Subgroup Lasso (SGSL)
 #'
-#' @param XX
-#' @param response
-#' @param group.index
-#' @param subgroup.index
-#' @param tau
-#' @param alpha1
-#' @param alpha2
-#' @param alpha3
-#' @param nlam
-#' @param lambdas
-#' @param lambda.accuracy
-#' @param delta.group
-#' @param format.data
-#' @param cv.criterion
-#' @param nfold
-#' @param alphas.cv.range
+#' @param XX p by N matrix of predictors (N: sample size, p: number of predictors)
+#' @param response 1 by N matrix of response variable
+#' @param group.index index for groups
+#' @param subgroup.index index for subgroups
+#' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
+#' @param alpha1 regularization parameter.
+#' @param alpha2 regularization parameter.
+#' @param alpha3 regularization parameter.
+#' @param nlam number of lambda values.
+#' @param lambdas lambdas
+#' @param lambda.accuracy lambda.accuracy
+#' @param delta.group delta applied to C_p criterion for group lasso (Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.)
+#' @param format.data format.data
+#' @param cv.criterion logical indicator.
+#' @param nfold number of folds for cross-validation
+#' @param alphas.cv.range range of alphas for cross-validation
 #'
 #' @return
+#' \itemize{
+#'    \item \strong{interest:} {indicators of the selected predictors. 1 for selected predictors and 0 for not selected predictors.}
+#'    \item \strong{alpha.out:} {alpha.out}
+#' }
 #' @export
 #'
 #' @examples
+#' set.seed(1)
+#' N=30;
+#' L=10;
+#' p.in.group =8;
+#' p=L * p.in.group;
+#' sigma <- sqrt(1);
+#' beta.coef <- matrix(0,nrow=2*L,ncol=(p/L)/2)
+#' beta.coef[1,] <- c(6,6.4,6.6,8)/2
+#' beta.coef[2,] <- c(6,6.4,6.6,8)/2
+#' beta.coef[3,] <- c(6,6.6,6.6,8)/2
+#' beta.coef[5,] <- c(12.5,12.5,0,0)/2
+#' beta.coef <- beta.coef *2
+#' p.group <- rep(p/L,L)
+#' group.index <- rep(1:length(p.group),p.group)
+#' index.subgroup <- matrix(NA,nrow=L,ncol=p)
+#' tmp <- 0
+#' for(k in 1:L){
+#' if(k==1){
+#' index.subgroup[k,1:p.group[k]] <- c(rep(1,(p/L)/2),rep(2,(p/L)/2))
+#' } else {
+#' ind <- 1:p.group[k] + sum(p.group[(k-1):1])
+#' index.subgroup[k,ind] <- c(rep(k+tmp,(p/L)/2),rep(k+tmp+1,(p/L)/2))
+#' }
+#' tmp <- tmp + 1
+#' }
+#' out <- data.group(N,p.group,beta.coef,sigma)
+#' response <- out$y
+#' XX <- out$X
+#' predictors_selected <- group.group.lasso.computations(XX=XX,response=response,group.index=group.index,index.subgroup=index.subgroup,tau=0.94,alpha1=0.05,alpha2=0.2,alpha3=0.1,nlam=100,lambdas=NULL,lambda.accuracy=1e-4)
 sparse.group.subgroup.computations <- function(XX,response,group.index,subgroup.index,tau,alpha1,alpha2,
                                                alpha3,nlam,lambdas,
                                                lambda.accuracy,
