@@ -899,7 +899,8 @@ cv.sparse.group.subgroup <- function(yy,XX,group.index,subgroup.index,tau,
 #' out <- data.group(N,p.group,beta.coef,sigma)
 #' response <- out$y
 #' XX <- out$X
-#' predictors_selected <- group.group.lasso.computations(XX=XX,response=response,group.index=group.index,index.subgroup=index.subgroup,tau=0.94,alpha1=0.05,alpha2=0.2,alpha3=0.1,nlam=100,lambdas=NULL,lambda.accuracy=1e-4)
+#' sparse.group.subgroup_result <- sparse.group.subgroup.computations(XX=XX,response=response,group.index=group.index,index.subgroup=index.subgroup,tau=0.94,alpha1=0.05,alpha2=0.2,alpha3=0.1,nlam=100,lambdas=NULL,lambda.accuracy=1e-4)
+#' predictors_selected <- sparse.group.subgroup_result$interest
 sparse.group.subgroup.computations <- function(XX,response,group.index,subgroup.index,tau,alpha1,alpha2,
                                                alpha3,nlam,lambdas,
                                                lambda.accuracy,
