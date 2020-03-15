@@ -2,7 +2,7 @@
 % Please edit documentation in R/main_functions.R
 \name{sparse.group.subgroup.computations}
 \alias{sparse.group.subgroup.computations}
-\title{Title}
+\title{Fit Sparse-Group_Subgroup Lasso (SGSL)}
 \usage{
 sparse.group.subgroup.computations(
   XX,
@@ -24,11 +24,76 @@ sparse.group.subgroup.computations(
 )
 }
 \arguments{
-\item{alphas.cv.range}{}
+\item{XX}{p by N matrix of predictors (N: sample size, p: number of predictors)}
+
+\item{response}{1 by N matrix of response variable}
+
+\item{group.index}{index for groups}
+
+\item{subgroup.index}{index for subgroups}
+
+\item{tau}{multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value}
+
+\item{alpha1}{regularization parameter.}
+
+\item{alpha2}{regularization parameter.}
+
+\item{alpha3}{regularization parameter.}
+
+\item{nlam}{number of lambda values.}
+
+\item{lambdas}{lambdas}
+
+\item{lambda.accuracy}{lambda.accuracy}
+
+\item{delta.group}{delta applied to C_p criterion for group lasso (Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.)}
+
+\item{format.data}{format.data}
+
+\item{cv.criterion}{logical indicator.}
+
+\item{nfold}{number of folds for cross-validation}
+
+\item{alphas.cv.range}{range of alphas for cross-validation}
 }
 \value{
-
+\itemize{
+   \item \strong{interest:} {indicators of the selected predictors. 1 for selected predictors and 0 for not selected predictors.}
+   \item \strong{alpha.out:} {alpha.out}
+}
 }
 \description{
-Title
+Fit Sparse-Group_Subgroup Lasso (SGSL)
+}
+\examples{
+set.seed(1)
+N=30;
+L=10;
+p.in.group =8;
+p=L * p.in.group;
+sigma <- sqrt(1);
+beta.coef <- matrix(0,nrow=2*L,ncol=(p/L)/2)
+beta.coef[1,] <- c(6,6.4,6.6,8)/2
+beta.coef[2,] <- c(6,6.4,6.6,8)/2
+beta.coef[3,] <- c(6,6.6,6.6,8)/2
+beta.coef[5,] <- c(12.5,12.5,0,0)/2
+beta.coef <- beta.coef *2
+p.group <- rep(p/L,L)
+group.index <- rep(1:length(p.group),p.group)
+index.subgroup <- matrix(NA,nrow=L,ncol=p)
+tmp <- 0
+for(k in 1:L){
+if(k==1){
+index.subgroup[k,1:p.group[k]] <- c(rep(1,(p/L)/2),rep(2,(p/L)/2))
+} else {
+ind <- 1:p.group[k] + sum(p.group[(k-1):1])
+index.subgroup[k,ind] <- c(rep(k+tmp,(p/L)/2),rep(k+tmp+1,(p/L)/2))
+}
+tmp <- tmp + 1
+}
+out <- data.group(N,p.group,beta.coef,sigma)
+response <- out$y
+XX <- out$X
+sgsl_result <- sparse.group.subgroup.computations(XX,response,group.index,index.subgroup,tau=0.94,alpha1=0.05,alpha2=0.2,alpha3=0.1,nlam=100,lambdas=NULL,lambda.accuracy=1e-4)
+predictors_selected <- sgsl_result$interest
 }

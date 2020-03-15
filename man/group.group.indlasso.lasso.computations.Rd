@@ -28,7 +28,7 @@ group.group.indlasso.lasso.computations(
 
 \item{p.group}{vector of the number of predictors in each group}
 
-\item{tau}{tau}
+\item{tau}{multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value}
 
 \item{delta.group}{delta applied to C_p criterion for group lasso (Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.)}
 
@@ -73,5 +73,5 @@ tmp <- tmp + 1
 out <- data.group(N,p.group,beta.coef,sigma)
 response <- out$y
 XX <- out$X
-predictors_selected <- group.group.indlasso.lasso.computations(XX=XX,response=response,index=index,index.subgroup=index.subgroup,p.group=p.group,tau=0.94,delta.group=2,delta.subgroup=2,delta.ind=2,standardize=TRUE)
+predictors_selected <- group.group.indlasso.lasso.computations(XX=XX,response=response,index=index,index.subgroup=index.subgroup,p.group=p.group,tau=0.94)
 }

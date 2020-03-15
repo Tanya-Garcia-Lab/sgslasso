@@ -469,7 +469,7 @@ group.group.indlasso.lasso <- function(response,XX,index,index.subgroup,p.group,
 #' out <- data.group(N,p.group,beta.coef,sigma)
 #' response <- out$y
 #' XX <- out$X
-#' predictors_selected <- group.group.indlasso.lasso.computations(XX=XX,response=response,index=index,index.subgroup=index.subgroup,p.group=p.group,tau=0.94,delta.group=2,delta.subgroup=2,delta.ind=2,standardize=TRUE)
+#' predictors_selected <- group.group.indlasso.lasso.computations(XX=XX,response=response,index=index,index.subgroup=index.subgroup,p.group=p.group,tau=0.94)
 group.group.indlasso.lasso.computations <- function(XX,response,index,index.subgroup,p.group,tau,
                                                     delta.group=2,delta.subgroup=2,delta.ind=2,
                                                     standardize=TRUE){
@@ -573,7 +573,7 @@ group.group.lasso <- function(yy,XX,index,index.subgroup,p.group,tau,
 #' out <- data.group(N,p.group,beta.coef,sigma)
 #' response <- out$y
 #' XX <- out$X
-#' predictors_selected <- group.group.lasso.computations(XX=XX,response=response,index=index,index.subgroup=index.subgroup,p.group=p.group,tau=0.94,delta.group=2,delta.subgroup=2,standardize=TRUE)
+#' predictors_selected <- group.group.lasso.computations(XX=XX,response=response,index=index,index.subgroup=index.subgroup,p.group=p.group,tau=0.94)
 group.group.lasso.computations <- function(XX,response,index,index.subgroup,p.group,tau,
                                            delta.group=2,
                                            delta.subgroup=2,standardize=TRUE){
@@ -899,8 +899,8 @@ cv.sparse.group.subgroup <- function(yy,XX,group.index,subgroup.index,tau,
 #' out <- data.group(N,p.group,beta.coef,sigma)
 #' response <- out$y
 #' XX <- out$X
-#' sparse.group.subgroup_result <- sparse.group.subgroup.computations(XX=XX,response=response,group.index=group.index,index.subgroup=index.subgroup,tau=0.94,alpha1=0.05,alpha2=0.2,alpha3=0.1,nlam=100,lambdas=NULL,lambda.accuracy=1e-4)
-#' predictors_selected <- sparse.group.subgroup_result$interest
+#' sgsl_result <- sparse.group.subgroup.computations(XX,response,group.index,index.subgroup,tau=0.94,alpha1=0.05,alpha2=0.2,alpha3=0.1,nlam=100,lambdas=NULL,lambda.accuracy=1e-4)
+#' predictors_selected <- sgsl_result$interest
 sparse.group.subgroup.computations <- function(XX,response,group.index,subgroup.index,tau,alpha1,alpha2,
                                                alpha3,nlam,lambdas,
                                                lambda.accuracy,
