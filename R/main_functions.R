@@ -159,7 +159,7 @@ form.tools <- function(index.subgroup){
 #' @param delta Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.
 #' @param standardize logical. TRUE for standardizing the data.
 #'
-#' @return interest: indicators of the selected predictors. 1 for selected predictors and 0 for not selected predictors
+#' @return indicators of the selected predictors. 1 for selected predictors and 0 for not selected predictors
 #' @export
 #'
 #' @examples
