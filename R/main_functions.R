@@ -270,6 +270,38 @@ lasso <- function(yy,XX,delta=2,standardize=TRUE){
 ## PURE GROUP LASSO Approach #
 ##############################
 
+#' Title
+#'
+#' @param XX p by N matrix of predictors (N: sample size, p: number of predictors)
+#' @param response 1 by N matrix of response variable
+#' @param index index for groups
+#' @param p.group vector of the number of predictors in each group
+#' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
+#' @param delta.group delta applied to C_p criterion for group lasso (Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.)
+#' @param standardize logical. TRUE for standardizing the data.
+#'
+#' @return indicators of the selected predictors. 1 for selected predictors and 0 for not selected predictors
+#' @export
+#'
+#' @examples
+#' set.seed(1)
+#' N=30;
+#' L=10;
+#' p.in.group =8;
+#' p=L * p.in.group;
+#' sigma <- sqrt(1);
+#' beta.coef <- matrix(0,nrow=2*L,ncol=(p/L)/2)
+#' beta.coef[1,] <- c(6,6.4,6.6,8)/2
+#' beta.coef[2,] <- c(6,6.4,6.6,8)/2
+#' beta.coef[3,] <- c(6,6.6,6.6,8)/2
+#' beta.coef[5,] <- c(12.5,12.5,0,0)/2
+#' beta.coef <- beta.coef *2
+#' p.group <- rep(p/L,L)
+#' index <- rep(1:length(p.group),p.group)
+#' out <- data.group(N,p.group,beta.coef,sigma)
+#' response <- out$y
+#' XX <- out$X
+#' predictors_selected <- pure.grplasso.computations(XX=XX,response=response,index=index,p.group=p.group,tau=0.94)
 pure.grplasso.computations <- function(XX,response,index,p.group,tau,
                                        delta.group=2,
                                        standardize=TRUE){
