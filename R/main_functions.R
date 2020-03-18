@@ -1,7 +1,7 @@
 #' Fit the sparse group-subgroup lasso (SGSL)
 #'
-#' @param x p by N matrix of predictors (N: sample size, p: number of predictors)
-#' @param y 1 by N matrix of response variable
+#' @param x N by p matrix of predictors (N: sample size, p: number of predictors)
+#' @param y N by 1 matrix of response variable
 #' @param type One of "lasso" (for the standard lasso), "group" (for the group lasso), "ggroup" (for the group lasso among subgroups), "ggroupind" (for the lasso with individual features), "sgsl" (for the sparse-group-subgroup lasso) or "groupsgl (for the sparse group lasso at subgroup level).
 #' @param alpha1 REgularization parameter.
 #' @param alpha2 regularization parameter.
@@ -154,8 +154,8 @@ form.tools <- function(index.subgroup){
 
 #' Fit the least absolute shrinkage and selection operator (lasso)
 #'
-#' @param XX p by N matrix of predictors (N: sample size, p: number of predictors)
-#' @param response 1 by N matrix of response variable
+#' @param XX N by p matrix of predictors (N: sample size, p: number of predictors)
+#' @param response N by 1 matrix of response variable
 #' @param delta Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.
 #' @param standardize logical. TRUE for standardizing the data.
 #'
@@ -272,8 +272,8 @@ lasso <- function(yy,XX,delta=2,standardize=TRUE){
 
 #' Title
 #'
-#' @param XX p by N matrix of predictors (N: sample size, p: number of predictors)
-#' @param response 1 by N matrix of response variable
+#' @param XX N by p matrix of predictors (N: sample size, p: number of predictors)
+#' @param response N by 1 matrix of response variable
 #' @param index index for groups
 #' @param p.group vector of the number of predictors in each group
 #' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
@@ -458,8 +458,8 @@ group.group.indlasso.lasso <- function(response,XX,index,index.subgroup,p.group,
 
 #' Fit the repeated group Lasso with individual features (applying the lasso after the group lasso at the group and subgroup levels)
 #'
-#' @param XX p by N matrix of predictors (N: sample size, p: number of predictors)
-#' @param response 1 by N matrix of response variable
+#' @param XX N by p matrix of predictors (N: sample size, p: number of predictors)
+#' @param response N by 1 matrix of response variable
 #' @param index index for groups
 #' @param index.subgroup index for subgroups
 #' @param p.group vector of the number of predictors in each group
@@ -563,8 +563,8 @@ group.group.lasso <- function(yy,XX,index,index.subgroup,p.group,tau,
 
 #' Fit the repeated group lasso (applying the group lasso at the group and subgroup levels)
 #'
-#' @param XX p by N matrix of predictors (N: sample size, p: number of predictors)
-#' @param response 1 by N matrix of response variable
+#' @param XX N by p matrix of predictors (N: sample size, p: number of predictors)
+#' @param response N by 1 matrix of response variable
 #' @param index index for groups
 #' @param index.subgroup index for subgroups
 #' @param p.group vector of the number of predictors in each group
@@ -878,8 +878,8 @@ cv.sparse.group.subgroup <- function(yy,XX,group.index,subgroup.index,tau,
 
 #' Fit the sparse group-subgroup lasso (SGSL)
 #'
-#' @param XX p by N matrix of predictors (N: sample size, p: number of predictors)
-#' @param response 1 by N matrix of response variable
+#' @param XX N by p matrix of predictors (N: sample size, p: number of predictors)
+#' @param response N by 1 matrix of response variable
 #' @param group.index index for groups
 #' @param subgroup.index index for subgroups
 #' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
