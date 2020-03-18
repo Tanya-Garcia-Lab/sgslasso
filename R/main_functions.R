@@ -7,8 +7,8 @@
 #' @param alpha2 regularization parameter.
 #' @param alpha3 regularization parameter.
 #' @param cv.criterion logical indicator.
-#' @param nlam number of lambda values.
-#' @param index.subgroup index for subgroups
+#' @param nlam number of lambda values used.
+#' @param index.subgroup matrix indicating which covariates belong to which subgroup within a group where each row corresponds to a group, and entries determine which subgroup the element belongs to
 #' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
 #' @param delta Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.
 #' @param delta.group delta applied to C_p criterion for group lasso
@@ -274,7 +274,7 @@ lasso <- function(yy,XX,delta=2,standardize=TRUE){
 #'
 #' @param XX N by p matrix of predictors (N: sample size, p: number of predictors)
 #' @param response N by 1 matrix of response variable
-#' @param index index for groups
+#' @param index vector indicating which covariates belong to which group
 #' @param p.group vector of the number of predictors in each group
 #' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
 #' @param delta.group delta applied to C_p criterion for group lasso (Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.)
@@ -460,8 +460,8 @@ group.group.indlasso.lasso <- function(response,XX,index,index.subgroup,p.group,
 #'
 #' @param XX N by p matrix of predictors (N: sample size, p: number of predictors)
 #' @param response N by 1 matrix of response variable
-#' @param index index for groups
-#' @param index.subgroup index for subgroups
+#' @param index vector indicating which covariates belong to which group
+#' @param index.subgroup matrix indicating which covariates belong to which subgroup within a group where each row corresponds to a group, and entries determine which subgroup the element belongs to
 #' @param p.group vector of the number of predictors in each group
 #' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
 #' @param delta.group delta applied to C_p criterion for group lasso (Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.)
@@ -565,8 +565,8 @@ group.group.lasso <- function(yy,XX,index,index.subgroup,p.group,tau,
 #'
 #' @param XX N by p matrix of predictors (N: sample size, p: number of predictors)
 #' @param response N by 1 matrix of response variable
-#' @param index index for groups
-#' @param index.subgroup index for subgroups
+#' @param index vector indicating which covariates belong to which group
+#' @param index.subgroup matrix indicating which covariates belong to which subgroup within a group where each row corresponds to a group, and entries determine which subgroup the element belongs to
 #' @param p.group vector of the number of predictors in each group
 #' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
 #' @param delta.group delta applied to C_p criterion for group lasso (Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.)
@@ -880,15 +880,15 @@ cv.sparse.group.subgroup <- function(yy,XX,group.index,subgroup.index,tau,
 #'
 #' @param XX N by p matrix of predictors (N: sample size, p: number of predictors)
 #' @param response N by 1 matrix of response variable
-#' @param group.index index for groups
-#' @param subgroup.index index for subgroups
+#' @param group.index vector indicating which covariates belong to which group
+#' @param subgroup.index matrix indicating which covariates belong to which subgroup within a group where each row corresponds to a group, and entries determine which subgroup the element belongs to
 #' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
 #' @param alpha1 regularization parameter.
 #' @param alpha2 regularization parameter.
 #' @param alpha3 regularization parameter.
-#' @param nlam number of lambda values.
-#' @param lambdas lambdas
-#' @param lambda.accuracy lambda.accuracy
+#' @param nlam number of lambda values used.
+#' @param lambdas lambda values used
+#' @param lambda.accuracy accuracy of lambda.max calculation
 #' @param delta.group delta applied to C_p criterion for group lasso (Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.)
 #' @param format.data format.data
 #' @param cv.criterion logical indicator.
