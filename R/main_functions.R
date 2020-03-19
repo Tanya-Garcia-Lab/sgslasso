@@ -3,10 +3,10 @@
 #' @param x N by p matrix of predictors (N: sample size, p: number of predictors)
 #' @param y N by 1 matrix of response variable
 #' @param type One of "lasso" (for the standard lasso), "group" (for the group lasso), "ggroup" (for the group lasso among subgroups), "ggroupind" (for the lasso with individual features), "sgsl" (for the sparse-group-subgroup lasso) or "groupsgl (for the sparse group lasso at subgroup level).
-#' @param alpha1 REgularization parameter.
-#' @param alpha2 regularization parameter.
-#' @param alpha3 regularization parameter.
-#' @param cv.criterion logical indicator.
+#' @param alpha1 regularization parameter for controling the level of sparsity among the groups. Higher value leads to more zero regression coefficients at the group level.
+#' @param alpha2 regularization parameter for controling the level of sparsity among the subgroups. Higher value leads to more zero regression coefficients at the subgroup level.
+#' @param alpha3 regularization parameter for controling the level of sparsity among the individual predictors. Higher value leads to more zero regression coefficients at the individual predictor level.
+#' @param cv.criterion logical. TRUE for conducting cross-validation.
 #' @param nlam number of lambda values used.
 #' @param index.subgroup matrix indicating which covariates belong to which subgroup within a group where each row corresponds to a group, and entries determine which subgroup the element belongs to
 #' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
@@ -883,15 +883,15 @@ cv.sparse.group.subgroup <- function(yy,XX,group.index,subgroup.index,tau,
 #' @param group.index vector indicating which covariates belong to which group
 #' @param subgroup.index matrix indicating which covariates belong to which subgroup within a group where each row corresponds to a group, and entries determine which subgroup the element belongs to
 #' @param tau multiplier for using a multiplicative grid for penalty parameter lambda, starting at maximal lambda value
-#' @param alpha1 regularization parameter.
-#' @param alpha2 regularization parameter.
-#' @param alpha3 regularization parameter.
+#' @param alpha1 regularization parameter for controling the level of sparsity among the groups. Higher value leads to more zero regression coefficients at the group level.
+#' @param alpha2 regularization parameter for controling the level of sparsity among the subgroups. Higher value leads to more zero regression coefficients at the subgroup level.
+#' @param alpha3 regularization parameter for controling the level of sparsity among the individual predictors. Higher value leads to more zero regression coefficients at the individual predictor level.
 #' @param nlam number of lambda values used.
 #' @param lambdas lambda values used
 #' @param lambda.accuracy accuracy of lambda.max calculation
 #' @param delta.group delta applied to C_p criterion for group lasso (Among the lasso solution path, the best descriptive model is the one which minimizes the loss function: (residual sum of squares)/(estimator of the model error variance) - (sample size) + delta*(number of predictors in the selected model). If delta = 2, this loss function is Mallows' Cp.)
 #' @param format.data format.data
-#' @param cv.criterion logical indicator.
+#' @param cv.criterion logical. TRUE for conducting cross-validation
 #' @param nfold number of folds for cross-validation
 #' @param alphas.cv.range range of alphas for cross-validation
 #'
