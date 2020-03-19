@@ -270,7 +270,7 @@ lasso <- function(yy,XX,delta=2,standardize=TRUE){
 ## PURE GROUP LASSO Approach #
 ##############################
 
-#' Title
+#' Fit the pure group lasso
 #'
 #' @param XX N by p matrix of predictors (N: sample size, p: number of predictors)
 #' @param response N by 1 matrix of response variable
