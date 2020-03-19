@@ -2,7 +2,7 @@
 #'
 #' @param x N by p matrix of predictors (N: sample size, p: number of predictors)
 #' @param y N by 1 matrix of response variable
-#' @param type One of "lasso" (for the standard lasso), "group" (for the group lasso), "ggroup" (for the group lasso among subgroups), "ggroupind" (for the lasso with individual features), "sgsl" (for the sparse-group-subgroup lasso) or "groupsgl (for the sparse group lasso at subgroup level).
+#' @param type One of "lasso" (for the standard lasso), "group" (for the group lasso), "ggroup" (for the group lasso among subgroups), "ggroupind" (for the lasso with individual features) or "sgsl" (for the sparse-group-subgroup lasso).
 #' @param alpha1 regularization parameter for controling the level of sparsity among the groups. Higher value leads to more zero regression coefficients at the group level.
 #' @param alpha2 regularization parameter for controling the level of sparsity among the subgroups. Higher value leads to more zero regression coefficients at the subgroup level.
 #' @param alpha3 regularization parameter for controling the level of sparsity among the individual predictors. Higher value leads to more zero regression coefficients at the individual predictor level.
@@ -111,7 +111,7 @@ sgsl <- function(x,y,type=c("lasso", "group", "ggroup", "ggroupind", "sgsl")[1],
                                               cv.criterion=cv.criterion,
                                               nfold=10,alphas.cv.range=seq(0.1,0.95,by=0.05))
   } else {
-    print("type should be either lasso, group, ggroup, ggroupind, sgsl or groupsgl")
+    print("type should be either lasso, group, ggroup, ggroupind or sgsl")
   }
 
   return(out)
