@@ -109,7 +109,7 @@ sgsl <- function(x,y,type=c("lasso", "group", "ggroup", "ggroupind", "sgsl")[1],
                                               lambdas=NULL,lambda.accuracy=1e-4,
                                               delta.group=delta.group,
                                               cv.criterion=cv.criterion,
-                                              nfold=10,alphas.cv.range=seq(0.1,0.95,by=0.05))
+                                              nfold=10,alphas.cv.range=seq(0.1,0.95,by=0.05))$interest
   } else {
     print("type should be either lasso, group, ggroup, ggroupind or sgsl")
   }
